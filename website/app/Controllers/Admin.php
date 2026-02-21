@@ -121,8 +121,18 @@ class Admin
     }
 
     public function tfa(){
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' && !isset($_POST['2fa'])) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' && !isset($_POST['2fa']) && !isset($_POST['csrf'])) {
             die("Invalid request");
+        }
+        $errors = [];
+        $csrf = $_POST['csrf'];
+        if ($csrf !== $_SESSION['CSRF']) {
+            $errors["csrf"] = "CSRF validation failed";
+        }
+        if (count($errors) !== 0) {
+            $_SESSION['errors'] = $errors;
+            header("location: /admin/security");
+            die();
         }
         if(!$this->tfa->verifyCode($_SESSION['2FA'], $_POST['2fa'])){
             $_SESSION['errors'] = ["2FA verification failed, try again"];
@@ -139,10 +149,14 @@ class Admin
 
     public function changePassword()
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' && !isset($_POST['old_pwd']) && !isset($_POST['new_pwd'])) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' && !isset($_POST['old_pwd']) && !isset($_POST['new_pwd']) && !isset($_POST['csrf'])) {
             die("Invalid request");
         }
         $errors = [];
+        $csrf = $_POST['csrf'];
+        if ($csrf !== $_SESSION['CSRF']) {
+            $errors["csrf"] = "CSRF validation failed";
+        }
         $user = $this->adminDB->getUserByID($_SESSION["id"])[0];
         if(!password_verify($_POST['old_pwd'], $user['pwd_hash'])){
             $errors["wrong_password"] = "Wrong old password";

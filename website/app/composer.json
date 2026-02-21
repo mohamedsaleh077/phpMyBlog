@@ -3,5 +3,12 @@
     "platform": {
       "php": "8.3.0"
     }
+  },
+  "autoload": {
+    "psr-4": {
+      "Core\\": "Core/",
+      "Controllers\\": "Controllers/",
+      "Models\\": "Models/"
+    }
   }
 }

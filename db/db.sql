@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS `articles` (
     `title` VARCHAR(255) NOT NULL,
     `slug` VARCHAR(255) NOT NULL UNIQUE,
     `content` MEDIUMTEXT(65535) NOT NULL,
-    `keywords` TEXT(65535) NOT NULL,
+    `keywords` TEXT NOT NULL,
     `seo_title` VARCHAR(255) NOT NULL,
     `meta_description` TEXT(65535) NOT NULL,
     `thumbnail` VARCHAR(255) NOT NULL,
@@ -20,13 +20,13 @@ CREATE TABLE IF NOT EXISTS `articles` (
 CREATE TABLE IF NOT EXISTS `categories` (
     `id` INTEGER NOT NULL AUTO_INCREMENT UNIQUE,
     `name` VARCHAR(255) NOT NULL,
-    `info` TEXT(65535),
+    `info` TEXT,
     PRIMARY KEY(`id`)
 );
 CREATE TABLE IF NOT EXISTS `admins` (
     `id` INTEGER NOT NULL AUTO_INCREMENT UNIQUE,
     `fullname` VARCHAR(255) NOT NULL,
-    `info` TEXT(65535),
+    `info` TEXT,
     `pfp` VARCHAR(255),
     `pwd_hash` VARCHAR(255) NOT NULL,
     PRIMARY KEY(`id`)

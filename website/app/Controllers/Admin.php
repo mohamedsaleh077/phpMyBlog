@@ -1,20 +1,23 @@
 <?php
 
 namespace Controllers;
+use Controllers\Tfa;
 use Core\Controller;
 use Core\Database;
 use Models\AdminDB;
-use Controllers\Tfa;
 
 class Admin
 {
     private $adminDB;
+    private $tfa;
     public function __construct()
     {
         if (!$this->checkLogin()){
             $this->login();
         }
         $this->adminDB = new AdminDB();
+        $this->tfa = new Tfa();
+
     }
 
     private function checkLogin(){
@@ -38,6 +41,7 @@ class Admin
         }
         $username = $_POST['username'];
         $password = $_POST['password'];
+        $tfa = $_POST['2fa'];
         $csrf = $_POST['csrf'];
 
         $errors = array();
@@ -70,6 +74,14 @@ class Admin
                 }
             } else {
                 $errors["username"] = "Username doesn't exists";
+            }
+            if($user['2fa']){
+                if (strlen($tfa) !== 6){
+                    $errors["tfa"] = "2FA must be 6 numbers! you enabled it lol.";
+                }
+                if(!$this->tfa->verifyCode($user['2fa'], $tfa)){
+                    $errors["tfa_wrong"] = "2FA verification failed, try again";
+                }
             }
         }
         if (count($errors) !== 0) {
@@ -112,8 +124,7 @@ class Admin
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' && !isset($_POST['2fa'])) {
             die("Invalid request");
         }
-        $tfa = new Tfa();
-        if(!$tfa->verifyCode($_SESSION['2FA'], $_POST['2fa'])){
+        if(!$this->tfa->verifyCode($_SESSION['2FA'], $_POST['2fa'])){
             $_SESSION['errors'] = ["2FA verification failed, try again"];
             header("location: /admin/security");
             die();
@@ -154,4 +165,8 @@ class Admin
         header("location: /admin/security");
     }
 
+    public function categories()
+    {
+        Controller::view('categories');
+    }
 }

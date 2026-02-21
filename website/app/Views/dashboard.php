@@ -24,6 +24,6 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
     <a href="/Admin/profile">Profile</a> ::
     <a href="/Admin/security">Security</a>
 </nav>
-
+<p>Welcome to your phpMyBlog admin panel!, What would you share with the world?</p>
 </body>
 </html>

@@ -13,6 +13,7 @@
         <input type="hidden" name="csrf" value="<?= $_SESSION['CSRF'] ?>">
         <input type="text" name="username" id="username" maxlength="255" placeholder="Username">
         <input type="password" name="password" id="password" maxlength="255" placeholder="Password">
+        <input type="text" name="2fa" id="2fa" maxlength="6" placeholder="2FA code if exists">
         <input type="submit" value="Login">
     </form>
     <br>

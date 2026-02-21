@@ -15,7 +15,7 @@ class Tfa
     }
 
     public function verifyCode($userSecret, $code){
-        return $result = $this->tfa->verifyCode($userSecret, $code);
+        return $this->tfa->verifyCode($userSecret, $code);
     }
 
     public function QRCode(){

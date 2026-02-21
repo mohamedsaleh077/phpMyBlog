@@ -39,6 +39,7 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
     unset($_SESSION['errors']);
 }?>
 <hr>
+<p>Categories: </p>
 <?php
     use Controllers\Categories;
     $categories = new Categories();

@@ -8,7 +8,7 @@ RUN chown -R apache:apache /sites/localhost || true
 
 # composer commands
 WORKDIR /sites/localhost/html/public/app
-COPY ./website/app/composer.json ./
+COPY ./website/app/composer.json /sites/localhost/html/public/app/
 
 RUN apk add composer
 RUN composer install

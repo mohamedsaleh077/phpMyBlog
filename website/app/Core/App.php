@@ -53,7 +53,13 @@ class App
         if (file_exists($controller_file)) {
             $this->controllerName = 'Controllers\\' . $this->url[0];
             unset($this->url[0]);
+            return;
         }
+
+        if ($this->controllerName === '') {
+            $this->PageNotFound();
+        }
+
     }
 
     private function SetMethod()

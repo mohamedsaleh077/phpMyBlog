@@ -17,13 +17,10 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
 <h1>adminMyBlog</h1>
 <h2>Login as <?= $_SESSION['username'] ?></h2>
 <nav>
-    <a href="/Admin/logout">Logout</a> ::
-    <a href="/Admin/categories">categories</a> ::
-    <a href="/Admin/uploads">Uploads</a> ::
-    <a href="/Admin/createBlog">Create Blog</a> ::
-    <a href="/Admin/profile">Profile</a> ::
-    <a href="/Admin/security">Security</a>
+    <a href="/admin/logout">Logout</a> ::
+    <a href="/admin/categories">categories</a> ::
+    <a href="/admin/uploads">Uploads</a> ::
+    <a href="/admin/createBlog">Create Blog</a> ::
+    <a href="/admin/profile">Profile</a> ::
+    <a href="/admin/security">Security</a>
 </nav>
-
-</body>
-</html>

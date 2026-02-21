@@ -24,4 +24,22 @@ class AdminDB
             ->where([["username", "="]])
             ->Build()->execute([$username]);
     }
+
+    public function getUserByID($id){
+        return $this->db->select("admins", ["*"])
+            ->where([["id", "="]])
+            ->Build()->execute([$id]);
+    }
+
+    public function addTFA(){
+        return $this->db->update("admins", ["2fa" => "2fa"])
+            ->where([["id", "="]])
+            ->Build()->execute(["2fa" => $_SESSION["2FA"], "id" => $_SESSION["id"]]);
+    }
+
+    public function changePwd($hash){
+        return $this->db->update("admins", ["pwd_hash" => "pwd_hash"])
+            ->where([["id", "="]])
+            ->Build()->execute(["pwd_hash" => $hash, "id" => $_SESSION["id"]]);
+    }
 }

@@ -2,19 +2,19 @@
 
 namespace Controllers;
 use Core\Controller;
+use Core\Database;
 use Models\AdminDB;
+use Controllers\Tfa;
 
 class Admin
 {
     private $adminDB;
     public function __construct()
     {
-        if ($this->checkLogin()){
-            $this->dashboard();
-        } else {
+        if (!$this->checkLogin()){
             $this->login();
         }
-
+        $this->adminDB = new AdminDB();
     }
 
     private function checkLogin(){
@@ -53,11 +53,15 @@ class Admin
         if ($csrf !== $_SESSION['CSRF']) {
             $errors["csrf"] = "CSRF validation failed";
         }
-
-        $this->adminDB = new AdminDB();
+        if (count($errors) !== 0) {
+            $_SESSION['errors'] = $errors;
+            header("location: /admin/login");
+            die();
+        }
         $c = $this->adminDB->checkUsers();
-        if (!$c[0]['c']){
+        if ($c[0]['c'] === 0){
             $this->register($username, $password);
+            $user = ['id' => Database::lastInsertId(), "2fa" => null];
         }else{
             $user = $this->adminDB->getUser($username)[0];
             if($user){
@@ -75,7 +79,9 @@ class Admin
         }
         $_SESSION['username'] = $username;
         $_SESSION['login'] = true;
-        header("location: /admin/dashboard");
+        $_SESSION['id'] = $user['id'];
+        $_SESSION['2fa_enable'] = ($user['2fa'] !== null);
+        header("location: /admin/");
         die();
     }
 
@@ -88,7 +94,7 @@ class Admin
         $this->adminDB->createUser($username, $hashedPwd);
     }
 
-    public function dashboard(){
+    public function index(){
         Controller::view('dashboard');
     }
 
@@ -97,4 +103,55 @@ class Admin
         header('Location: /admin/');
         die();
     }
+
+    public function security(){
+        Controller::view('security');
+    }
+
+    public function tfa(){
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' && !isset($_POST['2fa'])) {
+            die("Invalid request");
+        }
+        $tfa = new Tfa();
+        if(!$tfa->verifyCode($_SESSION['2FA'], $_POST['2fa'])){
+            $_SESSION['errors'] = ["2FA verification failed, try again"];
+            header("location: /admin/security");
+            die();
+        }
+        $this->adminDB->addTFA();
+        unset($_SESSION['2FA']);
+        $_SESSION['2fa_enable'] = true;
+        header("location: /admin/security");
+        $_SESSION['errors'] = ["2FA verification done, code is saved!"];
+        die();
+    }
+
+    public function changePassword()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' && !isset($_POST['old_pwd']) && !isset($_POST['new_pwd'])) {
+            die("Invalid request");
+        }
+        $errors = [];
+        $user = $this->adminDB->getUserByID($_SESSION["id"])[0];
+        if(!password_verify($_POST['old_pwd'], $user['pwd_hash'])){
+            $errors["wrong_password"] = "Wrong old password";
+        }
+        $password = $_POST['new_pwd'];
+        if (strlen($password) < 7 || strlen($password) > 255){
+            $errors["password_length"] = "New Password must be between 8 and 255 characters";
+        }
+        if (count($errors) !== 0) {
+            $_SESSION['errors'] = $errors;
+            header("location: /admin/security");
+            die();
+        }
+        $options = [
+            'cost' => 12
+        ];
+        $hashedPwd = password_hash($password, PASSWORD_DEFAULT, $options);
+        $this->adminDB->changePwd($hashedPwd);
+        $_SESSION['errors'] = ["new password is saved!"];
+        header("location: /admin/security");
+    }
+
 }

@@ -13,5 +13,6 @@ COPY ./website/app/composer.json /sites/localhost/html/public/app/
 RUN apk add composer
 RUN composer install
 RUN composer update
+RUN composer dump-autoload
 
 EXPOSE 80 443 8025

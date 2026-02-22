@@ -38,7 +38,7 @@ class App
             return;
         }
         $url = filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL);
-        $url = preg_replace('/[^a-zA-Z0-9\/]/', '', $url);
+        $url = preg_replace('/[^a-zA-Z0-9\/\.\-\_]/', '', $url);
         $this->url = explode('/', $url);
     }
 

@@ -5,6 +5,9 @@ use Controllers\Tfa;
 use Core\Controller;
 use Core\Database;
 use Models\AdminDB;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+use Core\Uploader;
 
 class Admin
 {
@@ -183,4 +186,47 @@ class Admin
     {
         Controller::view('categories');
     }
+
+    public function uploads(){
+        Controller::view("media");
+    }
+
+    private function toWebp($input){
+        $manager = new ImageManager(new Driver());
+        $image = $manager->read($input);
+        return $image->toWebp();
+    }
+
+    public function uploadFile(){
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' && !isset($_POST['csrf'])) {
+            die("Invalid request");
+        }
+        $errors = [];
+        $csrf = $_POST['csrf'];
+        if ($csrf !== $_SESSION['CSRF']) {
+            $errors["csrf"] = "CSRF validation failed";
+        }
+        if (!isset($_FILES["media"]) || ($_FILES['media']['error'] !== UPLOAD_ERR_OK)){
+            $errors["media"] = "There was an error uploading your file.";
+        }
+        if (count($errors) !== 0) {
+            $_SESSION['errors'] = $errors;
+            header("location: /admin/uploads");
+            die();
+        }
+        $uploader = new Uploader($_FILES["media"], 10);
+        $result = $uploader->upload();
+        if (!$result["ok"]){
+            $errors = $result["error"];
+            $_SESSION['errors'] = $errors;
+            header("location: /admin/uploads");
+            die();
+        }
+        $this->toWebp($result["path"].$result["fullfilename"])
+            ->save($result["path"].$result["filename"].".webp");
+        unlink($result["path"].$result["fullfilename"]);
+        header("location: /admin/uploads");
+        die();
+    }
+
 }

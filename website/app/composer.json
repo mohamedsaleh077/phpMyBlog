@@ -5,7 +5,8 @@
     }
   },
   "require": {
-    "robthree/twofactorauth": "3.0.3"
+    "robthree/twofactorauth": "3.0.3",
+    "intervention/image": "3.11.7"
   },
   "autoload": {
     "psr-4": {

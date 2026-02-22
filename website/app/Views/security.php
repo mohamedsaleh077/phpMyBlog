@@ -29,7 +29,7 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
 <img src="/Tfa/QRCode" alt="2FA QR code">
 <form action="/admin/tfa" method="post">
     <input type="hidden" name="csrf" value="<?= $_SESSION['CSRF'] ?>">
-    <input type="text" maxlength="6" name="2fa">
+    <input type="text" maxlength="6" name="2fa" required>
     <input type="submit" value="Submit">
 </form>
 <br>
@@ -40,8 +40,8 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
 <p>Change Password</p>
 <form action="/admin/changePassword" method="post">
     <input type="hidden" name="csrf" value="<?= $_SESSION['CSRF'] ?>">
-    <input type="password" name="old_pwd" id="" maxlength="255" placeholder="Old password">
-    <input type="password" name="new_pwd" id="" maxlength="255" placeholder="New password">
+    <input type="password" name="old_pwd" id="" maxlength="255" placeholder="Old password" required>
+    <input type="password" name="new_pwd" id="" maxlength="255" placeholder="New password" required>
     <input type="submit" value="Update">
 </form>
 

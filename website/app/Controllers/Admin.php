@@ -229,4 +229,8 @@ class Admin
         die();
     }
 
+    public function createBlog(){
+        Controller::view("creator");
+    }
+
 }

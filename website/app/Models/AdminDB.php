@@ -42,4 +42,25 @@ class AdminDB
             ->where([["id", "="]])
             ->Build()->execute(["pwd_hash" => $hash, "id" => $_SESSION["id"]]);
     }
+
+    public function createPost($params)
+    {
+        $cols = [
+           "author_id" => $params["author_id"],
+           "category_id" =>$params["category_id"],
+           "title" => $params["title"],
+           "slug" => $params["slug"],
+           "content" => $params["content"],
+           "keywords" => $params["keywords"],
+           "seo_title" => $params["seo_title"],
+           "meta_description" => $params["meta_description"],
+           "thumbnail" => $params["image"],
+        ];
+
+        var_dump($cols);
+
+        return $this->db
+            ->insert("articles", array_keys($cols))
+            ->Build()->execute($cols);
+    }
 }

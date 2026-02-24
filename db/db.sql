@@ -22,12 +22,12 @@ CREATE TABLE IF NOT EXISTS `articles` (
   `author_id` INTEGER NOT NULL,
   `category_id` INTEGER NOT NULL,
   `title` VARCHAR(255) NOT NULL,
-    `slug` VARCHAR(255) NOT NULL UNIQUE,
-    `content` TEXT NOT NULL,
-    `keywords` TEXT NOT NULL,
-    `seo_title` VARCHAR(255) NOT NULL,
-    `meta_description` TEXT NOT NULL,
-    `thumbnail` VARCHAR(255) NOT NULL,
+  `slug` VARCHAR(255) NOT NULL UNIQUE,
+  `content` TEXT NOT NULL,
+  `keywords` TEXT NOT NULL,
+  `seo_title` VARCHAR(255) NOT NULL,
+  `meta_description` TEXT NOT NULL,
+  `thumbnail` VARCHAR(255) NOT NULL,
     PRIMARY KEY(`id`),
 
     FOREIGN KEY(`category_id`) REFERENCES `categories`(`id`)

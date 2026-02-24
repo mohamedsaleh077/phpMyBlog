@@ -43,12 +43,12 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
         .form-editor *{
             border: 1px solid black;
             width: 50%;
-            background: white;
             padding: 10px;
         }
         .form-editor div{
             flex-grow: 1;
             overflow-x: scroll;
+            background: white;
         }
         .form-editor div *{
             border: none;
@@ -56,8 +56,10 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
             background: none;
             padding: 3px;
             margin: 3px;
+            max-width: 100%;
         }
         textarea{
+            background: white;
             font-size: x-large;
             resize: horizontal;
             font-family: monospace;
@@ -80,18 +82,17 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
     </nav>
 </div>
 
-<form action="">
+<form action="/admin/createPost" method="post">
     <div class="inputs">
+        <input type="hidden" name="csrf" value="<?= $_SESSION['CSRF'] ?>">
         <input type="text" name="title" id="title" maxlength="255" required placeholder="Post Title">
         <input type="text" name="image" id="image" maxlength="255" required placeholder="thumbnail (get from uploads)">
-        <input type="text" name="slug" id="slug" maxlength="255" required placeholder="Slug" disabled>
-        <select name="category" id="category">
-            <option value="0">uncategorized</option>
-        </select>
+        <input type="text" name="slug" id="slug" maxlength="255" required placeholder="Slug" readonly>
+        <select name="category_id" id="category"></select>
         <button type="submit">Post!</button>
     </div>
     <div class="form-editor">
-        <textarea name="post" id="post" cols="30" rows="10" required placeholder="Post Content">
+        <textarea name="content" id="post" cols="30" rows="10" required placeholder="Post Content">
 ## Introduction
 Today we are talking.
 - Hi.</textarea>

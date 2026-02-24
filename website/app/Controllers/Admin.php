@@ -20,7 +20,6 @@ class Admin
         }
         $this->adminDB = new AdminDB();
         $this->tfa = new Tfa();
-
     }
 
     private function checkLogin(){
@@ -231,6 +230,46 @@ class Admin
 
     public function createBlog(){
         Controller::view("creator");
+    }
+
+    public function createPost(){
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' && !isset($_POST['csrf'])) {
+            die("Invalid request");
+        }
+        $errors = [];
+
+        $title  = $_POST["title"];
+        $image = $_POST["image"];
+        $slug  = $_POST["slug"];
+        $post = $_POST["content"];
+        $csrf = $_POST['csrf'];
+        $keywords = $_POST["keywords"];
+        $seo_title = $_POST["seo_title"];
+        $meta_description = $_POST["meta_description"];
+        $category = $_POST["category_id"];
+
+        if ($csrf !== $_SESSION['CSRF']) {
+            $errors["csrf"] = "CSRF validation failed";
+        }
+
+        foreach ($_POST as $key => $value) {
+            if (strlen($value) <= 0 || strlen($value) > 255){
+                $errors[$key] = $key . " must be between 0 and 255 characters.";
+            }
+        }
+
+        if (count($errors) !== 0) {
+            $_SESSION['errors'] = $errors;
+            header("location: /admin/uploads");
+            die();
+        }
+
+        $dbParams = $_POST;
+        unset($dbParams['csrf']);
+        $dbParams["author_id"] = $_SESSION["id"];
+        $this->adminDB->createPost($dbParams);
+        header("location: /");
+        die();
     }
 
 }

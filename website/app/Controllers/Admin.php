@@ -253,7 +253,10 @@ class Admin
         }
 
         foreach ($_POST as $key => $value) {
-            if (strlen($value) <= 0 || strlen($value) > 255){
+            if (strlen($value) <= 0 || strlen($value) > 255 && ($key !== "content" && $key !== "category_id")){
+                $errors[$key] = $key . " must be between 0 and 255 characters.";
+            }
+            if (strlen($value) < 0 && (!in_array($key, ["content", "category_id"]))){
                 $errors[$key] = $key . " must be between 0 and 255 characters.";
             }
         }

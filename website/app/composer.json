@@ -6,7 +6,8 @@
   },
   "require": {
     "robthree/twofactorauth": "3.0.3",
-    "intervention/image": "3.11.7"
+    "intervention/image": "3.11.7",
+    "michelf/php-markdown": "2.*"
   },
   "autoload": {
     "psr-4": {

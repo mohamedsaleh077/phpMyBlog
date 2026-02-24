@@ -1,6 +1,7 @@
 <?php
 
 namespace Controllers;
+use Core\Controller;
 use Models\CategoriesDB;
 
 class Categories
@@ -53,6 +54,10 @@ class Categories
         $this->db->del($id);
         header("location: /admin/categories");
         die();
+    }
+
+    public function explore($id){
+        Controller::view("category", [$id]);
     }
 
 }

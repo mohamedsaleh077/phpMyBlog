@@ -1,0 +1,129 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a, a:visited {
+    color: #0070b8;
+    font-weight: 800;
+}
+
+a:hover{
+    color: #33aafa;
+}
+
+body {
+    background: #eee;
+}
+
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px;
+    border-right: #33aafa dotted 2px;
+    border-left: #33aafa dotted 2px;
+    background-color: #ccebff;
+
+}
+
+header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+header a, header a img{
+    max-width: 450px;
+    width: 100%;
+    margin: auto;
+}
+
+header form {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+header form * {
+    border-radius: 0;
+    margin: 5px;
+    padding: 10px;
+}
+.form-group {
+    max-width: 900px;
+    width: 100%;
+    display: flex;
+}
+header form input[type=text] {
+    flex: 1;
+    max-width: 80dvw;
+    font-weight: 400;
+    border: 2px inset #d5d5d5;
+    color: #424242;
+    background: #fff;
+    box-shadow: -1px -1px 0 0 #828282;
+}
+
+header form input[type=submit] {
+    font-weight: 400;
+    color: #212529;
+    cursor: pointer;
+    background-color: silver;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+aside {
+    /*width: 33%;*/
+    width: 300px;
+    padding: 15px;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border-right: #424242 solid 2px;
+}
+
+article {
+    width: 66%;
+    /*max-width: 800px;*/
+    padding: 15px 20px;
+    flex-grow: 1;
+}
+
+article img {
+    max-width: 100%;
+}
+article h1, article h2, article h3, article h4, article h5, article h6 {
+    background: linear-gradient(90deg,rgba(42, 123, 155, 0) 0%, rgb(128, 206, 255) 0%, rgba(237, 221, 83, 0) 100%);
+    padding: 5px;
+}
+article * {
+    margin: 15px 0 15px 0;
+}
+
+article p {
+    line-height: 25px;
+}
+
+.headTitle{
+    text-align: center;
+    background: linear-gradient(90deg,rgba(42, 123, 155, 0) 0%, rgba(51, 170, 250, 1) 50%, rgba(237, 221, 83, 0) 100%);
+    font-weight: 700;
+    font-size: large;
+}
+
+.floatingImg {
+    float: right;
+    margin: 10px;
+}
+
+#categories *, .asidethings *{
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 5px;
+}

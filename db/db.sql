@@ -1,13 +1,13 @@
 CREATE TABLE IF NOT EXISTS `categories` (
-                                            `id` INTEGER NOT NULL AUTO_INCREMENT UNIQUE,
-                                            `name` VARCHAR(255) NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT UNIQUE,
+    `name` VARCHAR(255) NOT NULL,
     `info` TEXT,
     PRIMARY KEY(`id`)
     );
 
 CREATE TABLE IF NOT EXISTS `admins` (
-                                        `id` INTEGER NOT NULL AUTO_INCREMENT UNIQUE,
-                                        `username` VARCHAR(255) NOT NULL UNIQUE,
+    `id` INTEGER NOT NULL AUTO_INCREMENT UNIQUE,
+    `username` VARCHAR(255) NOT NULL UNIQUE,
     `fullname` VARCHAR(255),
     `info` TEXT,
     `pfp` VARCHAR(255),

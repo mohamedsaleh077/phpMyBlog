@@ -9,7 +9,14 @@ class Categories
     public function __construct(){
         $this->db = new CategoriesDB();
     }
-    public function list(){
+    public function listAll(){
+        header("content-type: application/json");
+        echo json_encode($this->db->getAll()[0]);
+        die();
+    }
+
+    public function list()
+    {
         return $this->db->getAll();
     }
 

@@ -18,10 +18,10 @@ CREATE TABLE IF NOT EXISTS `admins` (
 
 
 CREATE TABLE IF NOT EXISTS `articles` (
-                                          `id` INTEGER NOT NULL AUTO_INCREMENT UNIQUE,
-                                          `author_id` INTEGER NOT NULL,
-                                          `category_id` INTEGER NOT NULL,
-                                          `title` VARCHAR(255) NOT NULL,
+  `id` INTEGER NOT NULL AUTO_INCREMENT UNIQUE,
+  `author_id` INTEGER NOT NULL,
+  `category_id` INTEGER NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
     `slug` VARCHAR(255) NOT NULL UNIQUE,
     `content` TEXT NOT NULL,
     `keywords` TEXT NOT NULL,

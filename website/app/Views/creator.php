@@ -52,7 +52,7 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
         }
         .form-editor div *{
             border: none;
-            width: 100%;
+            width: auto;
             background: none;
             padding: 3px;
             margin: 3px;
@@ -64,7 +64,7 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
             overflow-x: scroll;
         }
     </style>
-</head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body bgcolor="#ccc">
 <div class="containr">
@@ -83,27 +83,55 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
 <form action="">
     <div class="inputs">
         <input type="text" name="title" id="title" maxlength="255" required placeholder="Post Title">
-        <input type="text" name="slug" id="slug" maxlength="255" required placeholder="Slug">
+        <input type="text" name="image" id="image" maxlength="255" required placeholder="thumbnail (get from uploads)">
+        <input type="text" name="slug" id="slug" maxlength="255" required placeholder="Slug" disabled>
+        <select name="category" id="category">
+            <option value="0">uncategorized</option>
+        </select>
         <button type="submit">Post!</button>
     </div>
     <div class="form-editor">
-        <textarea name="post" id="post" cols="30" rows="10">
+        <textarea name="post" id="post" cols="30" rows="10" required placeholder="Post Content">
 ## Introduction
 Today we are talking.
 - Hi.</textarea>
         <div id="preview">
         </div>
     </div>
+    <h3>SEO!</h3>
+    <input type="text" name="keywords" id="keywords" maxlength="255" placeholder="Post Keywords" required>
+    <input type="text" name="seo_title" id="seo_title" maxlength="255" placeholder="Post seo_title" required>
+    <input type="text" name="meta_description" id="meta_description" maxlength="255" placeholder="Post meta_description" required>
 </form>
 
 <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
 <script>
-    let editor = document.getElementById("post");
-    let preview = document.getElementById("preview");
-    preview.innerHTML = marked.parse(editor.value);
-    editor.addEventListener("keydown", function (event) {
-        preview.innerHTML = marked.parse(editor.value);
-    });
+    $(document).ready(function () {
+        const editor = $("#post");
+        const preview = $("#preview");
+
+        preview.html(marked.parse(editor.val()));
+
+        editor.on("input", function (event) {
+            preview.html(marked.parse(editor.val()));
+        });
+
+        let reg = "/[^a-zA-Z0-9\-]/";
+        const title = $("#title");
+        const slug = $("#slug");
+        title.on("input", function (event) {
+            slug.val(title.val().toLowerCase().replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-'));
+        });
+
+        $.get("/categories/listAll", function (result) {
+            $.each(result, function (i, item) {
+                $('#category').append($('<option>', {
+                    value: item.id,
+                    text : item.name
+                }));
+            });
+        })
+    })
 </script>
 
 </body>
